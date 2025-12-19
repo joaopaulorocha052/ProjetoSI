@@ -5,9 +5,16 @@ from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 from scipy.spatial import distance
 import time
+import sys
 
 path_modelo = 'face_landmarker.task'
-arquivo_rosto = 'pedro.jpg'
+
+if len(sys.argv) > 2:
+	arquivo_rosto = sys.argv[1]
+	video_input = sys.argv[2]
+else:
+	arquivo_rosto = 'pedro.jpg'
+	video_input =  0
 
 #Ajustar
 EAR_THRESHOLD = 0.4  # Limiar para considerar olho aberto
@@ -38,7 +45,7 @@ def calcula_ear(landmarks, top_bot, esq_dir):
     h = distance.euclidean((landmarks[esq_dir[0]].x, landmarks[esq_dir[1]].y),(landmarks[esq_dir[1]].x, landmarks[esq_dir[1]].y))
     return v/h
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(video_input)
 
 while cap.isOpened():
     ret, frame = cap.read()

@@ -6,9 +6,16 @@ from mediapipe.tasks.python import vision
 from scipy.spatial import distance
 import time
 import random
+import sys
 
 path_modelo = 'face_landmarker.task'
-arquivo_rosto = 'pedro.jpg'
+
+if len(sys.argv) > 2:
+	arquivo_rosto = sys.argv[1]
+	video_input = sys.argv[2]
+else:
+	arquivo_rosto = 'pedro.jpg'
+	video_input = 0
 
 #Ajustar
 EAR_THRESHOLD = 0.18  # Olho fechado
@@ -45,7 +52,7 @@ def calcula_ratio(landmarks, pontos):
     h = distance.euclidean((landmarks[pontos['esq_dir'][0]].x, landmarks[pontos['esq_dir'][0]].y),(landmarks[pontos['esq_dir'][1]].x, landmarks[pontos['esq_dir'][1]].y))
     return v/h
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(video_input)
 
 while cap.isOpened():
     ret, frame = cap.read()

@@ -5,10 +5,19 @@ import numpy as np
 from mediapipe.tasks import python
 from mediapipe.tasks.python import vision
 import time
+import sys
 
 path_modelo = 'face_landmarker.task'
 
-img_rosto = face_recognition.load_image_file("pedro.jpg")
+if len(sys.argv) > 2:
+	img_file = sys.argv[1]
+	video_input = sys.argv[2]
+else:
+	img_file = 'pedro.jpg'
+	video_input = 0
+
+img_rosto = face_recognition.load_image_file(img_file)
+
 encoding_rosto = face_recognition.face_encodings(img_rosto)[0]
 
 #MediaPipe
@@ -19,7 +28,7 @@ options = vision.FaceLandmarkerOptions(
     num_faces=1)
 detector = vision.FaceLandmarker.create_from_options(options)
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(video_input)
 
 while cap.isOpened():
     ret, frame = cap.read()
